@@ -65,6 +65,7 @@ if (signupBtn) {
 
 // Fetch and display courses (for courses.html)
 if (document.getElementById("coursesGrid")) {
+  // Use the live Render URL for fetching courses
   fetch("https://e-learning-platform-bepj.onrender.com/api/courses")
     .then(res => res.json())
     .then(data => {
@@ -77,6 +78,7 @@ if (document.getElementById("coursesGrid")) {
           <h3>${course.title}</h3>
           <p>${course.description || "No description available."}</p>
           <a href="${course.link}" target="_blank">View Course</a>
+          <button class="edit-btn" data-id="${course._id}">Edit</button>
         `;
         grid.appendChild(div);
       });
@@ -101,6 +103,7 @@ if (document.getElementById("uploadForm")) {
     const description = document.getElementById("description").value;
     const link = document.getElementById("link").value;
 
+    // Use the live Render URL for uploading a new course
     await fetch("https://e-learning-platform-bepj.onrender.com/api/courses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -111,3 +114,65 @@ if (document.getElementById("uploadForm")) {
     window.location.href = "courses.html";
   });
 }
+// Function to fetch a single course by ID and show the modal
+const openEditModal = async (courseId) => {
+    try {
+        const response = await fetch(`https://e-learning-platform-bepj.onrender.com/api/courses/${courseId}`);
+        const course = await response.json();
+
+        // Populate the modal form with the course data
+        document.getElementById("editCourseId").value = course._id;
+        document.getElementById("editTitle").value = course.title;
+        document.getElementById("editDescription").value = course.description || "";
+        document.getElementById("editLink").value = course.link;
+
+        // Show the modal
+        document.getElementById("editCourseModal").style.display = "block";
+    } catch (error) {
+        console.error("Error fetching course for edit:", error);
+        alert("Failed to load course details for editing.");
+    }
+};
+
+// Handle clicks on the "Edit" button
+document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("edit-btn")) {
+        const courseId = event.target.getAttribute("data-id");
+        openEditModal(courseId);
+    }
+});
+
+// Handle saving the edited course
+document.getElementById("editForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const courseId = document.getElementById("editCourseId").value;
+    const updatedData = {
+        title: document.getElementById("editTitle").value,
+        description: document.getElementById("editDescription").value,
+        link: document.getElementById("editLink").value,
+    };
+
+    try {
+        await fetch(`https://e-learning-platform-bepj.onrender.com/api/courses/${courseId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData),
+        });
+
+        alert("Course updated successfully!");
+        document.getElementById("editCourseModal").style.display = "none";
+        window.location.reload(); // Reload the page to show the updated course
+    } catch (error) {
+        console.error("Error updating course:", error);
+        alert("Failed to update course.");
+    }
+});
+
+// Handle closing the modal
+document.querySelector(".close-btn").addEventListener("click", () => {
+    document.getElementById("editCourseModal").style.display = "none";
+});
+
+document.querySelector(".cancel-btn").addEventListener("click", () => {
+    document.getElementById("editCourseModal").style.display = "none";
+});

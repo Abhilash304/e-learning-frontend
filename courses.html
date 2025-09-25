@@ -1,35 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Learn — Browse Courses</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Learn — Browse Courses</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="logo">📘 E-Learn</div>
-    <input type="text" id="searchBox" placeholder="Search courses, instructors, topics..." class="search-box">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="#">My Learning</a>
-      <a href="upload.html">Teach</a>
-      <span class="icon">🔔</span>
-      <span class="icon">👤</span>
-      <button class="login-btn">Log In</button>
-      <button class="signup-btn">Sign Up</button>
-    </nav>
-  </header>
+    <header class="navbar">
+    <div class="logo">📘 E-Learn</div>
+    <input type="text" id="searchBox" placeholder="Search courses, instructors, topics..." class="search-box">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">My Learning</a>
+      <a href="upload.html">Teach</a>
+      <span class="icon">🔔</span>
+      <span class="icon">👤</span>
+      <button class="login-btn">Log In</button>
+      <button class="signup-btn">Sign Up</button>
+    </nav>
+  </header>
 
-  <!-- Courses Section -->
-  <section class="courses-section">
-    <h2>Available Courses</h2>
-    <div id="coursesGrid" class="courses-grid">
-      <!-- Courses will load dynamically here -->
-    </div>
-  </section>
+    <section class="courses-section">
+    <div class="courses-header">
+      <h2>Available Courses</h2>
+      <a href="upload.html" class="add-course-btn">Add New Course</a>
+    </div>
+    <div id="coursesGrid" class="courses-grid">
+          </div>
+  </section>
 
-  <script src="script.js"></script>
+    <div id="editCourseModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Course</h2>
+        <span class="close-btn">&times;</span>
+      </div>
+      <form id="editForm" class="edit-form">
+        <input type="hidden" id="editCourseId">
+        <div class="form-group">
+          <label for="editTitle">Title</label>
+          <input type="text" id="editTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="editDescription">Description</label>
+          <textarea id="editDescription"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="editLink">Link</label>
+          <input type="url" id="editLink" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Save Changes</button>
+          <button type="button" class="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
